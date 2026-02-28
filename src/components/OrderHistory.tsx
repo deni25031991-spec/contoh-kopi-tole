@@ -23,8 +23,13 @@ export const OrderHistory: React.FC = () => {
     loadHistory();
     // Listen for storage changes in case orders are added in another component
     window.addEventListener('storage', loadHistory);
-    // Also poll slightly or use a custom event if needed, but for now we'll rely on manual refresh or re-mount
-    return () => window.removeEventListener('storage', loadHistory);
+    // Listen for custom event from Menu component in the same window
+    window.addEventListener('thole_order_updated', loadHistory);
+    
+    return () => {
+      window.removeEventListener('storage', loadHistory);
+      window.removeEventListener('thole_order_updated', loadHistory);
+    };
   }, []);
 
   const clearHistory = () => {

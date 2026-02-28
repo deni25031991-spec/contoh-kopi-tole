@@ -4,21 +4,28 @@ import { DigitalClock } from './components/DigitalClock';
 import { Menu } from './components/Menu';
 import { LocationStatus } from './components/LocationStatus';
 import { OrderHistory } from './components/OrderHistory';
+import { Login } from './components/Login';
 import { Coffee, Instagram, Twitter, MessageCircle, ArrowRight } from 'lucide-react';
 
 export default function App() {
+  const [isLoginOpen, setIsLoginOpen] = React.useState(false);
   return (
     <div className="min-h-screen relative overflow-x-hidden grid-bg">
+      <Login isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      
       {/* Scanline effect */}
       <div className="scanline pointer-events-none" />
 
       {/* Navigation Rail */}
       <nav className="fixed left-0 top-0 h-full w-16 border-r border-white/10 flex flex-col items-center py-8 gap-8 z-50 bg-[var(--color-coffee-dark)]">
-        <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 bg-white/5 p-1">
+        <div 
+          onClick={() => setIsLoginOpen(true)}
+          className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 bg-white/5 p-1 cursor-pointer hover:border-[var(--color-digital-amber)]/50 transition-all group"
+        >
           <img 
             src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=200&auto=format&fit=crop" 
             alt="Thole Coffee Logo"
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-lg group-hover:scale-110 transition-transform"
             referrerPolicy="no-referrer"
           />
         </div>
@@ -53,12 +60,13 @@ export default function App() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-3xl overflow-hidden border border-white/10 shadow-2xl"
+              onClick={() => setIsLoginOpen(true)}
+              className="w-32 h-32 md:w-48 md:h-48 mx-auto mb-8 rounded-3xl overflow-hidden border border-white/10 shadow-2xl cursor-pointer hover:border-[var(--color-digital-amber)]/50 transition-all group"
             >
               <img 
                 src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=500&auto=format&fit=crop" 
                 alt="Thole Coffee Logo"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                 referrerPolicy="no-referrer"
               />
             </motion.div>
