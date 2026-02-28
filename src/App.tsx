@@ -154,18 +154,28 @@ export default function App() {
         {/* Footer */}
         <footer className="py-12 px-8 border-t border-white/5 text-center">
           <div className="flex justify-center gap-8 mb-8">
-             <div className="flex flex-col items-center gap-2">
-                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-[var(--color-digital-amber)] transition-colors cursor-pointer group">
+             <a 
+               href="https://wa.me/6281234567890" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               className="flex flex-col items-center gap-2 group"
+             >
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[var(--color-digital-amber)] transition-colors cursor-pointer">
                   <MessageCircle className="w-5 h-5 group-hover:text-[var(--color-digital-amber)]" />
                 </div>
-                <span className="text-[8px] font-mono uppercase tracking-widest opacity-40">WhatsApp</span>
-             </div>
-             <div className="flex flex-col items-center gap-2">
-                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-[var(--color-digital-amber)] transition-colors cursor-pointer group">
+                <span className="text-[8px] font-mono uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">WhatsApp</span>
+             </a>
+             <a 
+               href="https://instagram.com/tholecoffee" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               className="flex flex-col items-center gap-2 group"
+             >
+                <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[var(--color-digital-amber)] transition-colors cursor-pointer">
                   <Instagram className="w-5 h-5 group-hover:text-[var(--color-digital-amber)]" />
                 </div>
-                <span className="text-[8px] font-mono uppercase tracking-widest opacity-40">Instagram</span>
-             </div>
+                <span className="text-[8px] font-mono uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">Instagram</span>
+             </a>
           </div>
           <p className="font-mono text-[10px] uppercase tracking-[0.5em] opacity-20">
             © 2026 THOLE COFFEE DIGITAL INTERFACE. ALL RIGHTS RESERVED.
