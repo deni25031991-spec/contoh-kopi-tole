@@ -23,6 +23,7 @@ export const Menu: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [orderConfirmed, setOrderConfirmed] = useState<MenuItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -40,9 +41,25 @@ export const Menu: React.FC = () => {
   }, []);
 
   const handleAddToOrder = () => {
-    if (selectedItem) {
-      setOrderConfirmed(selectedItem);
-      setSelectedItem(null);
+    if (selectedItem && !isAdding) {
+      setIsAdding(true);
+      
+      // Small delay to show the "Adding..." animation
+      setTimeout(() => {
+        const newOrder = {
+          ...selectedItem,
+          orderDate: new Date().toISOString(),
+          orderId: `ORD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+        };
+        
+        // Save to localStorage
+        const existingHistory = JSON.parse(localStorage.getItem('thole_order_history') || '[]');
+        localStorage.setItem('thole_order_history', JSON.stringify([newOrder, ...existingHistory]));
+        
+        setOrderConfirmed(selectedItem);
+        setSelectedItem(null);
+        setIsAdding(false);
+      }, 800);
     }
   };
 
@@ -164,13 +181,38 @@ export const Menu: React.FC = () => {
                       </div>
                     </div>
 
-                    <button 
+                    <motion.button 
+                      disabled={isAdding}
                       onClick={handleAddToOrder}
-                      className="w-full py-4 bg-[var(--color-digital-amber)] text-black font-bold uppercase tracking-[0.2em] text-xs rounded-xl hover:bg-white transition-all flex items-center justify-center gap-2 group"
+                      animate={isAdding ? { scale: 0.95, backgroundColor: '#10b981' } : { scale: 1 }}
+                      className={`w-full py-4 ${isAdding ? 'bg-emerald-500' : 'bg-[var(--color-digital-amber)]'} text-black font-bold uppercase tracking-[0.2em] text-xs rounded-xl hover:bg-white transition-all flex items-center justify-center gap-2 group relative overflow-hidden`}
                     >
-                      <ShoppingCart className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                      Add to Order
-                    </button>
+                      <AnimatePresence mode="wait">
+                        {isAdding ? (
+                          <motion.div
+                            key="adding"
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className="flex items-center gap-2"
+                          >
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Processing...
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            key="idle"
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            className="flex items-center gap-2"
+                          >
+                            <ShoppingCart className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                            Add to Order
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
                   </div>
                 </div>
               </div>
@@ -208,20 +250,33 @@ export const Menu: React.FC = () => {
               </div>
 
               <h2 className="text-2xl font-bold tracking-tight mb-2">Order Confirmed!</h2>
-              <p className="text-stone-400 text-sm mb-8">
+              <p className="text-stone-400 text-sm mb-6">
                 Our driver has received your request. We're brewing your <span className="text-white font-semibold">{orderConfirmed.name}</span> right now.
               </p>
 
-              <div className="bg-white/5 rounded-2xl p-4 flex items-center gap-4 mb-8 border border-white/5">
-                <img 
-                  src={orderConfirmed.image} 
-                  alt={orderConfirmed.name}
-                  className="w-16 h-16 object-cover rounded-xl"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="text-left">
-                  <p className="font-bold text-sm">{orderConfirmed.name}</p>
-                  <p className="font-mono text-xs text-[var(--color-digital-amber)]">{orderConfirmed.price}</p>
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/5 mb-8">
+                <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/5">
+                  <img 
+                    src={orderConfirmed.image} 
+                    alt={orderConfirmed.name}
+                    className="w-16 h-16 object-cover rounded-xl"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="text-left flex-1">
+                    <p className="font-bold text-sm">{orderConfirmed.name}</p>
+                    <p className="font-mono text-xs text-[var(--color-digital-amber)]">{orderConfirmed.price}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between text-[10px] font-mono uppercase tracking-widest opacity-40">
+                    <span>Total Price</span>
+                    <span className="text-white opacity-100">{orderConfirmed.price}</span>
+                  </div>
+                  <div className="flex justify-between text-[10px] font-mono uppercase tracking-widest opacity-40">
+                    <span>Est. Delivery</span>
+                    <span className="text-[var(--color-digital-amber)] opacity-100">15-20 Minutes</span>
+                  </div>
                 </div>
               </div>
 

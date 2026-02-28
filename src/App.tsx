@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { DigitalClock } from './components/DigitalClock';
 import { Menu } from './components/Menu';
 import { LocationStatus } from './components/LocationStatus';
+import { OrderHistory } from './components/OrderHistory';
 import { Coffee, Instagram, Twitter, MessageCircle, ArrowRight } from 'lucide-react';
 
 export default function App() {
@@ -99,6 +100,8 @@ export default function App() {
             {/* Right: Location & Stats */}
             <div className="lg:col-span-5 sticky top-24 space-y-8">
               <LocationStatus />
+              
+              <OrderHistory />
               
               <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
                 <h4 className="font-mono text-[10px] uppercase tracking-widest opacity-40 mb-4">Daily Telemetry</h4>
